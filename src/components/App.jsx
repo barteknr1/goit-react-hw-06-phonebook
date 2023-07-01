@@ -64,7 +64,7 @@ const App = () => {
       <ContactForm onSubmit={handleSubmit} />
       <h2>Contacts</h2>
       <Filter onChange={handleFilter} filter={filter} />
-      {isAnyContactSaved && (
+      {isAnyContactSaved && filter && (
         <div>
           <h3>Found {filteredContacts().length} of {contacts.length} contacts</h3>
           <progress value={filteredContacts().length} max={contacts.length} />
