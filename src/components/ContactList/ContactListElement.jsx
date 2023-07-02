@@ -1,19 +1,25 @@
-import css from './ContactList.module.css'
-import PropTypes from 'prop-types'
+import css from './ContactList.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteContact } from 'redux/contactsSlice';
+import { getContacts } from 'redux/selectors';
 
-const ContactListElement = ({name, number, id, onClick}) => {
+const ContactListElement = () => {
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
+  const handleDelete = (id) => dispatch(deleteContact(id));
+  
   return (
-    <div className={css.contactElement}>{name}: {number}
-      <button className={css.delete} onClick={() => onClick(id)} id={id} type='button'>Delete</button>
-    </div>
+    <>
+      {
+        contacts.map(({ id, name, number }) =>
+          <li key={id} className={css.contactElement}>
+            {name}: {number}
+            <button className={css.delete} onClick={() => handleDelete(id)} id={id} type='button'>Delete</button>
+          </li>
+        )
+      }
+    </>
   )
-}
-
-ContactListElement.propTypes = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-}
+};
 
 export default ContactListElement

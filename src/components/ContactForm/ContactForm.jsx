@@ -1,34 +1,29 @@
-import React, { useState } from 'react'
-import css from './ContactForm.module.css'
-import PropTypes from 'prop-types'
+import React from 'react';
+import css from './ContactForm.module.css';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
 
-const ContactForm = ({onSubmit}) => {
-    const [personData, setPersonData] = useState({ name: '', number: ''});    
-
-    const handleChange = e => {
-        e.preventDefault();
-        const { name, value } = e.target
-        setPersonData(data => ({ ...data, [name]: value }))
-    }
-
+const ContactForm = () => {
+    const dispatch = useDispatch();
     const handleSubmit = e => {
         e.preventDefault();
-        onSubmit(personData);
-        setPersonData({ name: '', number: '', });
+        const form = e.target;
+        const name = form.elements.name.value;
+        const number = form.elements.number.value;
+        dispatch(addContact(name, number));
+        form.reset();
     };
 
     return (
-        <form className={css.contactForm}
-            onSubmit={handleSubmit}
-        >
+        <form
+            className={css.contactForm}
+            onSubmit={handleSubmit}>
             <label>
                 <p className={css.inputName}>Name</p>
                 <input
                     className={css.input}
                     type="text"
                     name="name"
-                    value={personData.name}
-                    onChange={handleChange}
                     pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                     title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                     required
@@ -40,8 +35,6 @@ const ContactForm = ({onSubmit}) => {
                     className={css.input}
                     type="tel"
                     name="number"
-                    value={personData.number}
-                    onChange={handleChange}
                     pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                     title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                     required
@@ -52,10 +45,6 @@ const ContactForm = ({onSubmit}) => {
                 type="submit">Add contact</button>
         </form>
     )
-}
-
-ContactForm.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
 }
 
 export default ContactForm

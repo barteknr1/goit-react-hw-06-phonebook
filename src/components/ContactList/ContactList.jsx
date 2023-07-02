@@ -1,29 +1,22 @@
 import ContactListElement from './ContactListElement';
-import PropTypes from 'prop-types'
+import css from './ContactList.module.css'
+import { useSelector } from 'react-redux';
+import { getContacts } from 'redux/selectors';
 
-const ContactList = ({contacts, onClick}) => {
+const ContactList = () => {
+  const contacts = useSelector(getContacts);
   return (
-    <ul>
-      {contacts.map(contact =>
-        <li key={contact.id}>
-          <ContactListElement onClick={onClick}
-            name={contact.name}
-            number={contact.number}
-            id={contact.id}
-          />
-        </li>
-      )}
-    </ul>
+    <>
+      {contacts.length > 0 ? (
+        <ul>
+          <ContactListElement />
+        </ul>
+      ) : (
+        <p className={css.noContacts}>No saved contacts</p>
+      )
+      }
+    </>
   )
-}
-
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired
-  })),
-  onClick: PropTypes.func.isRequired,
 }
 
 export default ContactList
