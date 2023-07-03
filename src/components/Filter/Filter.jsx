@@ -6,8 +6,8 @@ const Filter = () => {
   const dispatch = useDispatch();
 
   const handleFilterChange = (e) => {
-    console.log(e.target.value);
-    dispatch(setFilter())
+    const filter = e.target.value;
+    dispatch(setFilter(filter));
   };
 
   return (
